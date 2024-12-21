@@ -6,9 +6,8 @@ import { MaterialIcons, Octicons } from "@expo/vector-icons";
 import { temas } from "../../global/temas";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/button";
-
+import { renderVaribale } from "../../global/variables";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
-
 
 export default function Cadastro() {
 
@@ -17,23 +16,23 @@ export default function Cadastro() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [showPassword, setShowPassword] = React.useState(true);
-    const [confirmpassword, setconfirmPassword] = React.useState("");
+    // const [confirmpassword, setconfirmPassword] = React.useState("");
     const [loading, setLoading] = React.useState(false);
 
     async function registerUser() {
         console.log("Início da função registerUser");
     
-        if (!email || !password || !confirmpassword) {
-            console.log("Erro: Campos obrigatórios não preenchidos");
-            alert("Preencha todos os campos");
-            return;
-        }
+        // if (!email || !password || !confirmpassword) {
+        //     console.log("Erro: Campos obrigatórios não preenchidos");
+        //     alert("Preencha todos os campos");
+        //     return;
+        // }
     
-        if (password !== confirmpassword) {
-            console.log("Erro: Senhas não coincidem");
-            alert("As senhas não coincidem");
-            return;
-        }
+        // if (password !== confirmpassword) {
+        //     console.log("Erro: Senhas não coincidem");
+        //     alert("As senhas não coincidem");
+        //     return;
+        // }
     
         try {
             console.log("Preparando para enviar dados ao servidor");
@@ -45,7 +44,7 @@ export default function Cadastro() {
                 password: password,
             });
     
-            const response = await fetch("http://192.168.1.65:3000/cadastro", {
+            const response = await fetch(`${renderVaribale}/cadastro`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -75,7 +74,7 @@ export default function Cadastro() {
             }
         } catch (error) {
             console.error("Erro ao cadastrar usuário:", error);
-            alert("Erro ao se conectar com o servidor.");
+            alert(`Erro ao se conectar com o servidor. URL: ${renderVaribale}/cadastro   ERRO: ${error}`);
         } finally {
             console.log("Finalizando execução da função registerUser");
             setLoading(false);
@@ -132,7 +131,7 @@ export default function Cadastro() {
                 />
 
 
-                <Input
+                {/* <Input
                     value={confirmpassword}
                     onChangeText={(text) => setconfirmPassword(text)}
                     title="CONFIRME SUA SENHA"
@@ -140,7 +139,7 @@ export default function Cadastro() {
                     iconRightName={showPassword ? "eye" : "eye-closed"}
                     secureTextEntry={showPassword}
                     onIconRigthPress={() => setShowPassword(!showPassword)}
-                />
+                /> */}
             </View>
 
             <View style={style.boxBotton}>

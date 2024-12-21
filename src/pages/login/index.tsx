@@ -7,7 +7,7 @@ import { temas } from "../../global/temas";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/button";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
-
+import { renderVaribale } from "../../global/variables";
 // import AsyncStorage from "@react-native-async- storage/async-storage";
 
 
@@ -36,7 +36,7 @@ export default function Login() {
     
             console.log("Dados sendo enviados:", { email, password });
     
-            const response = await fetch("http://192.168.1.65:3000/login", {
+            const response = await fetch(`${renderVaribale}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

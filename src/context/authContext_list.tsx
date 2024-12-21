@@ -1,135 +1,17 @@
-// import React, { createContext, useContext, useEffect } from "react";
-// import { Alert, Dimensions, Text, View, TouchableOpacity, StyleSheet } from "react-native";
-// import { Modalize } from "react-native-modalize";
-// import {AntDesign, MaterialIcons} from "@expo/vector-icons";
-// import { Input } from "../components/Input";
-
-// export const authContextList = createContext({});
-
-
-// export const AuthProvider_list = (props: any):any => {
-//     const modalizeRef = React.useRef<Modalize>(null);
-
-//     const onOpen = () => {
-//         modalizeRef.current?.open();
-//     };
-
-//     // useEffect(() => {
-//     //     onOpen();
-//     // }, []);
-
-//     const _container = () => {
-//         return (
-//             <View style={style.container}>
-//                 <View style={style.header}>
-//                     <TouchableOpacity>
-//                         <MaterialIcons name="close" style={{fontSize: 30}}/>
-//                     </TouchableOpacity>
-//                     <Text style={style.title}>Criar Tarefa</Text>
-//                     <TouchableOpacity>
-//                         <AntDesign name="check" style={{fontSize: 30}}/>
-//                     </TouchableOpacity>
-//                 </View>
-//                 <View style={style.content}>
-//                     <Input
-//                     title="Título:"
-//                     labelStyle={{fontSize: 12}}
-
-//                     />
-//                     <Input
-//                     title="Descrição:"
-//                     labelStyle={{fontSize: 12}}
-//                     height={100}
-//                     multiline={true}
-//                     numberOfLines={6}
-
-//                     />
-
-//                     <View style={{width:'40%'}}>
-//                         <Input
-//                         title="Tempo Limite:"
-//                         placeholder="Horas"
-//                         labelStyle={{fontSize: 12}}
-//                         keyboardType="numeric"
-//                         />
-//                     </View>
-                
-//                     <View style={style.containerFlag}>
-//                         <Text style={style.label}>Flags:</Text>
-//                         <View style={{}}></View>
-//                     </View>
-//                 </View>
-//             </View>
-//         )
-//       };
-      
-
-//     return (
-//         <authContextList.Provider value={{onOpen}}>
-//             {props.children}
-//             <Modalize 
-//             ref={modalizeRef}
-//             childrenStyle={{height: Dimensions.get('window').height / 1.5}}
-//             adjustToContentHeight={true}
-//             >
-//                 {_container()}
-//             </Modalize>
-//         </authContextList.Provider>
-//     );
-// };
-
-// export const useAuth = () => useContext(authContextList);
-
-
-// export const style = StyleSheet.create({
-//     container:{
-//         width: '100%',
-//     },
-
-//     header:{
-//         width: '100%',
-//         height: 40,
-//         paddingHorizontal: 40,
-//         flexDirection: 'row',
-//         marginTop: 20,
-//         justifyContent: 'space-between',
-//         alignItems: 'center',
-//     },
-
-//     title:{
-//         fontSize: 20,
-//         fontWeight: 'bold',
-
-//     },
-//     content:{
-//         width: '100%',
-//         paddingHorizontal: 40,
-//         marginTop: 20,
-//     },
-//     containerFlag:{
-//         width: '100%',
-//         padding: 20,
-//     },
-//     label:{
-
-//     }
-
-// });
-
 import React, { createContext, useContext, useRef, useEffect } from "react";
 import { Dimensions, Text, View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 
-export const authContextList = createContext({});
+export const authContextList = createContext<any>({});
 
 export const AuthProvider_list = (props: any): any => {
   const modalizeRef = useRef<Modalize>(null);
 
-  // Abre automaticamente quando o componente é montado
-  useEffect(() => {
+  // Função para abrir o modal
+  const onOpen = () => {
     modalizeRef.current?.open();
-  }, []);
+  };
 
   // Lista de exercícios
   const _exerciseList = () => {
@@ -137,9 +19,19 @@ export const AuthProvider_list = (props: any): any => {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>Exercícios do Dia</Text>
-          <TouchableOpacity>
-            <AntDesign name="pluscircle" style={styles.addIcon} />
-          </TouchableOpacity>
+
+          {/* Botão de Fechar */}
+          <View style={{ flexDirection: "row", gap: 10 }}>
+            <TouchableOpacity onPress={() => modalizeRef.current?.close()}>
+              <AntDesign name="closecircle" style={styles.closeIcon} />
+
+            </TouchableOpacity>
+
+            {/* Botão de Adicionar Exercício */}
+            <TouchableOpacity>
+              <AntDesign name="pluscircle" style={styles.addIcon} />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <ScrollView style={styles.content}>
@@ -172,15 +64,15 @@ export const AuthProvider_list = (props: any): any => {
   };
 
   return (
-    <authContextList.Provider value={{}}>
+    <authContextList.Provider value={{ onOpen }}>
       {props.children}
       <Modalize
         ref={modalizeRef}
         adjustToContentHeight={true}
-        disableScrollIfPossible={false} // Permite scroll interno
-        onOverlayPress={() => {}} // Remove ação de fechar ao clicar fora
-        closeOnOverlayTap={false} // Remove ação de fechamento
-        panGestureEnabled={false} // Remove a opção de deslizar para fechar
+        disableScrollIfPossible={false}
+        onOverlayPress={() => { }}
+        closeOnOverlayTap={false}
+        panGestureEnabled={false}
       >
         {_exerciseList()}
       </Modalize>
@@ -210,6 +102,10 @@ const styles = StyleSheet.create({
   addIcon: {
     fontSize: 28,
     color: "#4CAF50",
+  },
+  closeIcon: {
+    fontSize: 28,
+    color: "#F44336", // Vermelho para indicar fechar
   },
   content: {
     flex: 1,
