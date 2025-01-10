@@ -1,25 +1,17 @@
 export const temas = {
     cores: {
-        primaria: '#ff4c4c', // vermelho mais forte
-        secundaria: '#D9534F',
-        lightgray: '#D3D3D3',
-        gray: '#A9A9A9',
-        darkgray: '#696969',
-        insideGray: '#c0c0c0',
-        bgScreen: '#F5F5F5',
-        bgCard: '#fff',
-    }
-}
-
-// export const temas = {
-//     cores: {
-//         primaria: '#FF3B3B', // vermelho vibrante
-//         secundaria: '#E63946', // vermelho mais escuro e elegante
-//         lightgray: '#4E4E4E', // cinza claro para contrastar com o fundo
-//         gray: '#2C2C2C', // cinza neutro para superfícies secundárias
-//         darkgray: '#1A1A1A', // quase preto para profundidade
-//         insideGray: '#333333', // tom intermediário para áreas internas
-//         bgScreen: '#121212', // fundo principal do app (preto suave)
-//         bgCard: '#1E1E1E', // fundo de cartões e áreas destacadas
-//     }
-// }
+      primaria: '#E53935', // Vermelho mais forte e intenso
+      secundaria: '#D32F2F', // Vermelho secundário mais forte
+      lightgray: '#D3D3D3', // Cinza claro
+      gray: '#A9A9A9', // Cinza médio
+      darkgray: '#2c2c2c', // Cinza escuro
+      insideGray: '#c0c0c0', // Cinza intermediário
+      bgScreen: '#1c1c1c', // Fundo escuro (mais escuro que darkgray)
+      bgCard: '#2e2e2e', // Fundo dos cartões mais escuro para combinar
+      textoPrimario: '#ffffff', // Texto branco para contraste em fundo escuro
+      textoSecundario: '#BDBDBD', // Cinza claro para texto secundário
+      textoBranco: '#fff', // Texto branco
+      quasePreto: '#121212', // Quase preto para detalhes
+    },
+  };
+  

@@ -22,6 +22,7 @@ export const style = StyleSheet.create({
         width:'100%',
         borderRadius:40,
         fontSize:17,
+        color:temas.cores.gray,
         // paddingHorizontal:20
     },
     titleInput:{
