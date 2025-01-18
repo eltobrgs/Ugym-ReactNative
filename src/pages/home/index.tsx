@@ -430,7 +430,7 @@ const HighlightedFlatList = () => {
 // );
 const Banner = () => (
   <>
-    <View style={styles.bannertotal}>
+    
 
     <ImageBackground style={styles.banner} source={banner}>
       <View style={styles.bannerContainer}>
@@ -448,7 +448,7 @@ const Banner = () => (
         <OfferText>Vendas Relâmpago</OfferText>
       </View>
     </ImageBackground>
-    </View>
+    
     <Image source={model} style={styles.model} resizeMode="contain" />
 
   </>
@@ -473,7 +473,7 @@ const OfferText = ({children}: {children: React.ReactNode}) => (
 const Label = ({children}: {children: React.ReactNode}) => <Text style={styles.label}>{children}</Text>;
 const styles = StyleSheet.create({
   container: {flex: 1},
-  bannertotal: {flex: 1, width: "90%", justifyContent: 'center', alignItems: 'center', alignSelf: 'center'},
+  
   header: {
     paddingHorizontal: 5,
     flexDirection: 'row',
