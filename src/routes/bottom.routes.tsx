@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import List from '../pages/list';
-import User from '../pages/user';
+import DailyExercicices from '@/pages/DailyExercicices';
+import Profile from '../pages/Profile';
 import CustomTabBar from '../components/CustomTabBar';
 import Home from '../pages/home';
 import { AuthProvider_list } from '../context/authContext_list';
@@ -19,13 +19,13 @@ export default function BottomRoutes() {
                     component={Home} />
 
                 <Tab.Screen
-                    name="List"
-                    component={List}
+                    name="DailyExercicices"
+                    component={DailyExercicices}
                 />
 
                 <Tab.Screen
-                    name="User"
-                    component={User}
+                    name="Profile"
+                    component={Profile}
                 />
             </Tab.Navigator>
         </AuthProvider_list>

@@ -28,7 +28,7 @@ const CustomTabBar: React.FC<Props> = ({ state, navigation }) => {
     <View style={style.tabArea}>
 
       {/* Tab de Exercícios */}
-      <TouchableOpacity style={style.tabItem} onPress={() => goTo("List")}>
+      <TouchableOpacity style={style.tabItem} onPress={() => goTo("DailyExercicices")}>
         <AntDesign
           name="bars"
           style={{ opacity: state.index === TabIndex.List ? 1 : 0.5, color: temas.cores.primaria, fontSize: 32 }}
@@ -54,7 +54,7 @@ const CustomTabBar: React.FC<Props> = ({ state, navigation }) => {
       </TouchableOpacity>
 
       {/* Tab de Perfil */}
-      <TouchableOpacity style={style.tabItem} onPress={() => goTo("User")}>
+      <TouchableOpacity style={style.tabItem} onPress={() => goTo("Profile")}>
         <FontAwesome
           name="user"
           style={{ opacity: state.index === TabIndex.User ? 1 : 0.2, color: temas.cores.primaria, fontSize: 32 }}

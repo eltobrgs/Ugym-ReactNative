@@ -10,7 +10,7 @@ export default function Routes() {
     const Stack = createStackNavigator();
     return (
         <Stack.Navigator
-            initialRouteName="Login"
+            initialRouteName="BottonRoutes"
             screenOptions={{
             headerShown: false,
             cardStyle: {
