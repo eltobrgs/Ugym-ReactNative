@@ -5,7 +5,7 @@ import BottonRoutes from "./bottom.routes";
 import Cadastro from "../pages/cadastro";
 import PreferencesScreen from "../pages/PreferencesScreen";
 import { temas } from "../global/temas";
-
+import AddActivity from "@/pages/AddActivity";
 export default function Routes() {
     const Stack = createStackNavigator();
     return (
@@ -36,6 +36,9 @@ export default function Routes() {
             name="PreferencesScreen"
             component={PreferencesScreen} />
 
+            <Stack.Screen
+            name="AddActivity"
+            component={AddActivity} />
 
         </Stack.Navigator>
     );

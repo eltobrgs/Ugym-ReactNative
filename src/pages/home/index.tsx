@@ -10,6 +10,7 @@ import {
   FlatList,
   Dimensions, 
   Animated,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import Header from '@/components/header';
@@ -37,8 +38,15 @@ import heart from '../../assets/images/H.png';
 import calendar from '../../assets/images/Calender.png';
 import profile from '../../assets/images/User.png';
 import plus from '../../assets/images/Plus.png';
+import { useNavigation, NavigationProp } from "@react-navigation/native";
 
 const Home = () => {
+    const navigation = useNavigation<NavigationProp<any>>();
+  
+  const handleAdcCard = () => {
+    console.log('Adicionando Card');
+    navigation.navigate('AddActivity'); }  
+
   return (
     <>
     <ScrollView>
@@ -274,83 +282,110 @@ interface CardData {
   darkColor: string;
 }
 
-const Card = ({data, scale}: {data: any; scale: Animated.AnimatedInterpolation<number>}) => {
+const Card = ({ data, scale }: { data: any; scale: Animated.AnimatedInterpolation<number> }) => {
+  const isAddCard = data.name === 'Adicionar'; // Verifica se o card é de adição
+  const navigation = useNavigation<NavigationProp<any>>(); // Hook para navegação
+
+  const handleAdcCard = () => {
+    console.log('Adicionando Card');
+    navigation.navigate('AddActivity');
+  };
+
   return (
     <Animated.View
       style={{
-        transform: [{scale}],
+        transform: [{ scale }],
         height: 180,
         width: ITEM_WIDTH,
         padding: 10,
         alignSelf: 'center',
-        backgroundColor: data.color,
-        justifyContent: 'space-between',
+        backgroundColor: isAddCard ? '#D3D3D3' : data.color, // Se for o card de adição, usa a cor cinza
+        justifyContent: 'center', // Centra o conteúdo no card
         marginHorizontal: 2,
         borderRadius: 10,
         shadowColor: 'lightgrey',
-        shadowOffset: {width: -5, height: 5},
+        shadowOffset: { width: -5, height: 5 },
         shadowOpacity: 0.5,
         shadowRadius: 2,
-      }}>
-      <Image source={data.image} style={{height: 25, width: 25}} />
-      <View style={{alignSelf: 'center', margin: 5}}>
-        <Progress.Circle
-          size={50}
-          progress={data.status / 100}
-          showsText
-          unfilledColor="#ededed"
-          borderColor="#ededed"
-          color={temas.cores.primaria}
-          direction="counter-clockwise"
-          fill="white"
-          strokeCap="round"
-          thickness={5}
-          textStyle={{
-            fontSize: 16,
-            fontFamily: 'Poppins-Bold',
-            fontWeight: 'bold',
-            color: temas.cores.primaria,
-          }}
-        />
-      </View>
-      <View>
-        <Text style={{fontSize: 10, fontFamily: 'Poppins-Light', color: temas.cores.quasePreto}}>{'Dia     1'}</Text>
-        <Text style={{fontSize: 10, fontFamily: 'Poppins-Light', color: temas.cores.quasePreto}}>{'Tempo   20 min'}</Text>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
-        <Text style={{fontFamily: 'Poppins-Regular', color: temas.cores.quasePreto}}>{data.name}</Text>
-        <View
-          style={{
-            backgroundColor: data.lightColor,
-            padding: 2,
-            borderRadius: 10,
-          }}>
-          <Image
-            source={next}
+      }}
+    >
+      {isAddCard ? (
+        // Adiciona a funcionalidade de toque no card de adição
+        <TouchableWithoutFeedback onPress={handleAdcCard}>
+          <View>
+            <Image source={plus} style={{ height: 40, width: 40, alignSelf: 'center' }} />
+          </View>
+        </TouchableWithoutFeedback>
+      ) : (
+        <>
+          <Image source={data.image} style={{ height: 25, width: 25 }} />
+          <View style={{ alignSelf: 'center', margin: 5 }}>
+            <Progress.Circle
+              size={50}
+              progress={data.status / 100}
+              showsText
+              unfilledColor="#ededed"
+              borderColor="#ededed"
+              color={temas.cores.primaria}
+              direction="counter-clockwise"
+              fill="white"
+              strokeCap="round"
+              thickness={5}
+              textStyle={{
+                fontSize: 16,
+                fontFamily: 'Poppins-Bold',
+                fontWeight: 'bold',
+                color: temas.cores.primaria,
+              }}
+            />
+          </View>
+          <View>
+            <Text style={{ fontSize: 10, fontFamily: 'Poppins-Light', color: temas.cores.quasePreto }}>{'Dia     1'}</Text>
+            <Text style={{ fontSize: 10, fontFamily: 'Poppins-Light', color: temas.cores.quasePreto }}>{'Tempo   20 min'}</Text>
+          </View>
+          <View
             style={{
-              height: 12,
-              width: 12,
-              resizeMode: 'contain',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}
-          />
-        </View>
-      </View>
+          >
+            <Text style={{ fontFamily: 'Poppins-Regular', color: temas.cores.quasePreto }}>{data.name}</Text>
+            <View
+              style={{
+                backgroundColor: data.lightColor,
+                padding: 2,
+                borderRadius: 10,
+              }}
+            >
+              <Image
+                source={next}
+                style={{
+                  height: 12,
+                  width: 12,
+                  resizeMode: 'contain',
+                }}
+              />
+            </View>
+          </View>
+        </>
+      )}
     </Animated.View>
   );
 };
 
+
+
 const HighlightedFlatList = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
+
+  // Dados adicionais para o card de adicionar
+  const extendedData = [...data, {name: 'Adicionar', status: 0, image: plus, lightColor: '#D3D3D3', color: '#E0E0E0', darkColor: '#A9A9A9'}];
 
   return (
     <View style={{flex: 1, backgroundColor: temas.cores.bgScreen, justifyContent: 'center'}}>
       <Animated.FlatList
-        data={data}
+        data={extendedData}
         keyExtractor={(_, index) => index.toString()}
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -376,7 +411,10 @@ const HighlightedFlatList = () => {
             extrapolate: 'clamp',
           });
 
-          return <Card data={item} scale={scale} />;
+          return (
+            // Se for o card de adicionar, aplicar um estilo especial
+            <Card data={item} scale={scale} />
+          );
         }}
       />
     </View>
