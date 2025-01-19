@@ -11,10 +11,10 @@ import { renderVariable } from '@/global/variables';
 const PreferencesScreen = () => {
   const navigation = useNavigation<NavigationProp<any>>();
 
-  const [birthDate, setBirthDate] = useState('Ex: DD/MM/AAAA');
+  const [birthDate, setBirthDate] = useState('');
   const [gender, setGender] = useState('Masculino');
-  const [goal, setGoal] = useState('Ex: Ganhar massa muscular');
-  const [healthCondition, setHealthCondition] = useState('N/A');
+  const [goal, setGoal] = useState('');
+  const [healthCondition, setHealthCondition] = useState('');
   const [experience, setExperience] = useState('Iniciante');
   const [loading, setLoading] = useState(false);
 
@@ -71,9 +71,24 @@ const PreferencesScreen = () => {
           value={birthDate}
           onChangeText={setBirthDate}
           title="DATA DE NASCIMENTO"
-          placeholder=""
+          placeholder="Ex: DD/MM/AAAA"
           IconRigth={Feather}
           iconRightName="calendar"
+        />
+        {/* Campo de entrada para objetivo */}
+        <Input
+          value={goal}
+          onChangeText={setGoal}
+          title="OBJETIVO"
+          placeholder="Ex: Ganhar massa muscular"
+        />
+
+        {/* Campo de entrada para condição de saúde */}
+        <Input
+          value={healthCondition}
+          onChangeText={setHealthCondition}
+          title="CONDIÇÃO DE SAÚDE"
+          placeholder="Ex: Nenhuma"
         />
 
         {/* Picker para Gênero */}
@@ -106,21 +121,7 @@ const PreferencesScreen = () => {
           </Picker>
         </View>
 
-        {/* Campo de entrada para objetivo */}
-        <Input
-          value={goal}
-          onChangeText={setGoal}
-          title="OBJETIVO"
-          placeholder=""
-        />
-
-        {/* Campo de entrada para condição de saúde */}
-        <Input
-          value={healthCondition}
-          onChangeText={setHealthCondition}
-          title="CONDIÇÃO DE SAÚDE"
-          placeholder="Ex: Nenhuma"
-        />
+        
       </View>
 
       <View style={styles.boxBotton}>
