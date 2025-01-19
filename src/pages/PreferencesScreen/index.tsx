@@ -45,10 +45,11 @@ const PreferencesScreen = () => {
 
       if (response.ok) {
         Alert.alert("Sucesso", "Preferências salvas com sucesso!");
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "BottonRoutes" }],
-        });
+        // navigation.reset({
+        //   index: 0,
+        //   routes: [{ name: "BottonRoutes" }],
+        // });
+        navigation.navigate("BottonRoutes");
       } else {
         throw new Error("Não foi possível salvar as preferências.");
       }

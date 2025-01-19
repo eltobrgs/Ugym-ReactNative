@@ -53,6 +53,8 @@ export default function Routes() {
             <Stack.Screen
                 name="PreferencesScreen"
                 component={PreferencesScreen} />
+
+            
         </Stack.Navigator>
     );
 }
