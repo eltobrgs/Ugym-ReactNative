@@ -4,6 +4,9 @@ import Profile from '../pages/Profile';
 import CustomTabBar from '../components/CustomTabBar';
 import Home from '../pages/home';
 import { AuthProvider_list } from '../context/authContext_list';
+import AddActivity from "@/pages/AddActivity";
+
+import Settings from '@/pages/settings';
 const Tab = createBottomTabNavigator();
 
 export default function BottomRoutes() {
@@ -27,6 +30,13 @@ export default function BottomRoutes() {
                     name="Profile"
                     component={Profile}
                 />
+                <Tab.Screen
+                    name="Settings"
+                    component={Settings} />
+                <Tab.Screen
+                name="AddActivity"
+                component={AddActivity} />
+                
             </Tab.Navigator>
         </AuthProvider_list>
 

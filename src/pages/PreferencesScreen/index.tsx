@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/button'; // Botão reutilizável
 import { Feather } from '@expo/vector-icons';
 import { temas } from '../../global/temas';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { renderVaribale } from '@/global/variables';
 const PreferencesScreen = () => {
   const navigation = useNavigation<NavigationProp<any>>();
 
@@ -15,10 +16,47 @@ const PreferencesScreen = () => {
   const [goal, setGoal] = useState('Ex: Ganhar massa muscular');
   const [healthCondition, setHealthCondition] = useState('N/A');
   const [experience, setExperience] = useState('Iniciante');
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const savePreferences = () => {
-    navigation.navigate('BottonRoutes'); // Navega para a tela inicial
+  const savePreferences = async () => {
+    try {
+      setLoading(true);
+
+      const preferences = {
+        birthDate,
+        gender,
+        goal,
+        healthCondition,
+        experience,
+      };
+
+      // Puxando o token do usuário
+      const token = await AsyncStorage.getItem('userToken');
+
+      // Enviando as preferências para o backend
+      const response = await fetch(`${renderVaribale}/preferences`, {
+        method: 'POST',
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(preferences),
+      });
+
+      if (response.ok) {
+        Alert.alert("Sucesso", "Preferências salvas com sucesso!");
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "BottonRoutes" }],
+        });
+      } else {
+        throw new Error("Não foi possível salvar as preferências.");
+      }
+    } catch (error) {
+      Alert.alert("Erro", "Não foi possível salvar as preferências. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

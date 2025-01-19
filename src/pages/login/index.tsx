@@ -8,7 +8,7 @@ import { Input } from "../../components/Input";
 import { Button } from "../../components/button";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { renderVaribale } from "../../global/variables";
-// import AsyncStorage from "@react-native-async- storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export default function Login() {
@@ -54,8 +54,8 @@ export default function Login() {
                 alert("Login bem-sucedido!");
                 
                 // Se usar armazenamento local descomentado, logue o que será salvo
-                // console.log("Token sendo armazenado:", result.token);
-                // await AsyncStorage.setItem('userToken', result.token);
+                console.log("Token sendo armazenado:", result.token);
+                await AsyncStorage.setItem('userToken', result.token);
     
                 navigation.reset({
                     index: 0,

@@ -8,6 +8,7 @@ import { Input } from "../../components/Input";
 import { Button } from "../../components/button";
 import { renderVaribale } from "../../global/variables";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Cadastro() {
 
@@ -22,17 +23,13 @@ export default function Cadastro() {
     async function registerUser() {
         console.log("Início da função registerUser");
     
-        // if (!email || !password || !confirmpassword) {
-        //     console.log("Erro: Campos obrigatórios não preenchidos");
-        //     alert("Preencha todos os campos");
-        //     return;
-        // }
+        if (!email || !password) {
+            console.log("Erro: Campos obrigatórios não preenchidos");
+            alert("Preencha todos os campos");
+            return;
+        }
     
-        // if (password !== confirmpassword) {
-        //     console.log("Erro: Senhas não coincidem");
-        //     alert("As senhas não coincidem");
-        //     return;
-        // }
+        
     
         try {
             console.log("Preparando para enviar dados ao servidor");
@@ -64,10 +61,16 @@ export default function Cadastro() {
             if (response.status === 201) {
                 console.log("Cadastro realizado com sucesso");
                 alert("Cadastro realizado com sucesso");
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: "BottonRoutes" }],
-                });
+
+                // Se usar armazenamento local descomentado, logue o que será salvo
+                console.log("Token sendo armazenado:", result.token);
+                await AsyncStorage.setItem('userToken', result.token)
+
+                // navigation.reset({
+                //     index: 0,
+                //     routes: [{ name: "PreferencesScreen" }],
+                // });
+                navigation.navigate("PreferencesScreen");
             } else {
                 console.log("Erro no cadastro, status não é 201:", result.error);
                 alert(`Erro no cadastro: ${result.error}`);
@@ -113,12 +116,6 @@ export default function Cadastro() {
                     iconRightName="email"
                 />
 
-                <Input
-                    title="NÚMERO DE CELULAR"
-                    IconRigth={MaterialIcons}
-                    iconRightName="phone"
-                    keyboardType="phone-pad"
-                />
 
                 <Input
                     value={password}

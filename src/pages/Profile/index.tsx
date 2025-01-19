@@ -1,24 +1,81 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { temas } from '../../global/temas';
 import UserInfo from '../../components/UserInfo';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
 import GenericChart from '@/components/chart';
 import Header from '@/components/header';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { renderVaribale } from '@/global/variables';
 const ProfileScreen = () => {
   const navigation = useNavigation<NavigationProp<any>>();
+  const [userName, setUserName] = useState('Usuário');
+  const [userInfo, setUserInfo] = useState({
+    email: '',
+    dataNascimento: '',
+    genero: '',
+    objetivo: '',
+    experiencia: '',
+    condiçaodesaude: '',
+  });
 
-  const userInfo = {
-    nome: 'Rodrigo Gonçalves',
-    email: 'rodrigo@email.com',
-    telefone: '(11) 98765-4321',
-    dataNascimento: '10/01/1995',
-    genero: 'Masculino',
-    objetivo: 'Ganhar massa muscular',
-    experiencia: 'Intermediário',
-    condiçaodesaude: 'Nenhuma',
-  };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = await AsyncStorage.getItem('userToken');
+        if (!token) {
+          setUserName("Usuário");
+          return;
+        }
+  
+        // Buscar nome do usuário
+        const response = await fetch(`${renderVaribale}/me`, {
+          method: 'GET',
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          setUserName(data.name || "Usuário");
+  
+          // Agora buscar as preferências do usuário
+          const preferencesResponse = await fetch(`${renderVaribale}/preferences`, {
+            method: 'GET',
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
+  
+          if (preferencesResponse.ok) {
+            const preferencesData = await preferencesResponse.json();
+            setUserInfo({
+              email: data.email,
+              dataNascimento: preferencesData.birthDate,
+              genero: preferencesData.gender,
+              objetivo: preferencesData.goal,
+              experiencia: preferencesData.experience,
+              condiçaodesaude: preferencesData.healthCondition,
+            });
+          } else {
+            console.error("Erro ao buscar preferências:", preferencesResponse.status);
+          }
+        } else {
+          setUserName("Usuário");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar dados do usuário:", error);
+        Alert.alert("Erro", "Não foi possível carregar as informações.");
+        setUserName("Usuário");
+      }
+    };
+  
+    fetchUserData();
+  }, []);
 
   // Dados para gráficos
   const weightData = [80, 78, 76, 74, 73, 72]; // Pesos fictícios (em Kg)
@@ -46,14 +103,12 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       {/* Header com a foto do perfil */}
-      <Header nome="Rodrigo Gonçalves" imagem="https://via.placeholder.com/150" />
-
+      <Header nome={userName} imagem="https://via.placeholder.com/150" />
 
       {/* Detalhes do usuário */}
       <ScrollView contentContainerStyle={styles.detailsContainer}>
         <Text style={styles.sectionTitle}>Informações Pessoais</Text>
         <UserInfo label="Email" value={userInfo.email} />
-        <UserInfo label="Telefone" value={userInfo.telefone} />
         <UserInfo label="Data de Nascimento" value={userInfo.dataNascimento} />
         <UserInfo label="Gênero" value={userInfo.genero} />
 

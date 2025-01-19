@@ -3,7 +3,6 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/button'; // Botão reutilizável
-import { Feather } from '@expo/vector-icons';
 import { temas } from '../../global/temas';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
 
@@ -41,7 +40,7 @@ const AddActivityScreen = () => {
             color,
             darkColor,
         });
-        navigation.navigate('BottonRoutes'); // Navega para a tela inicial
+        navigation.navigate('Home'); // Navega para a tela inicial
     };
 
     return (
