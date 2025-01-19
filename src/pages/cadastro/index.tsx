@@ -6,7 +6,7 @@ import { MaterialIcons, Octicons } from "@expo/vector-icons";
 import { temas } from "../../global/temas";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/button";
-import { renderVaribale } from "../../global/variables";
+import { renderVariable } from "../../global/variables";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -41,7 +41,7 @@ export default function Cadastro() {
                 password: password,
             });
     
-            const response = await fetch(`${renderVaribale}/cadastro`, {
+            const response = await fetch(`${renderVariable}/cadastro`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -77,7 +77,7 @@ export default function Cadastro() {
             }
         } catch (error) {
             console.error("Erro ao cadastrar usuário:", error);
-            alert(`Erro ao se conectar com o servidor. URL: ${renderVaribale}/cadastro   ERRO: ${error}`);
+            alert(`Erro ao se conectar com o servidor. URL: ${renderVariable}/cadastro   ERRO: ${error}`);
         } finally {
             console.log("Finalizando execução da função registerUser");
             setLoading(false);

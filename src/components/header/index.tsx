@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, Alert, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { temas } from '../../global/temas';
-import { renderVaribale } from '@/global/variables';
+import { renderVariable } from '@/global/variables';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation, NavigationProp } from "@react-navigation/native";
@@ -26,7 +26,7 @@ const Header = ({ imagem }: HeaderProps) => {
         }
 
         // Buscar nome do usuário
-        const response = await fetch(`${renderVaribale}/me`, {
+        const response = await fetch(`${renderVariable}/me`, {
           method: 'GET',
           headers: {
             "Authorization": `Bearer ${token}`,

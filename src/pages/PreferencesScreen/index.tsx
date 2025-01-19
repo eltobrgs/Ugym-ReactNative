@@ -7,7 +7,7 @@ import { Feather } from '@expo/vector-icons';
 import { temas } from '../../global/temas';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { renderVaribale } from '@/global/variables';
+import { renderVariable } from '@/global/variables';
 const PreferencesScreen = () => {
   const navigation = useNavigation<NavigationProp<any>>();
 
@@ -34,7 +34,7 @@ const PreferencesScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
 
       // Enviando as preferências para o backend
-      const response = await fetch(`${renderVaribale}/preferences`, {
+      const response = await fetch(`${renderVariable}/preferences`, {
         method: 'POST',
         headers: {
           "Authorization": `Bearer ${token}`,

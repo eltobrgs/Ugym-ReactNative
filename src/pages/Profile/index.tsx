@@ -7,7 +7,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/core';
 import GenericChart from '@/components/chart';
 import Header from '@/components/header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { renderVaribale } from '@/global/variables';
+import { renderVariable } from '@/global/variables';
 const ProfileScreen = () => {
   const navigation = useNavigation<NavigationProp<any>>();
   const [userName, setUserName] = useState('Usuário');
@@ -30,7 +30,7 @@ const ProfileScreen = () => {
             }
 
             // Buscar nome do usuário
-            const response = await fetch(`${renderVaribale}/me`, {
+            const response = await fetch(`${renderVariable}/me`, {
                 method: 'GET',
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -43,7 +43,7 @@ const ProfileScreen = () => {
                 setUserName(data.name || "Usuário");
 
                 // Agora buscar as preferências do usuário
-                const preferencesResponse = await fetch(`${renderVaribale}/preferences`, {
+                const preferencesResponse = await fetch(`${renderVariable}/preferences`, {
                     method: 'GET',
                     headers: {
                         "Authorization": `Bearer ${token}`,
