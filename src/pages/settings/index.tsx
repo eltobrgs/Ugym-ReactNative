@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ScrollView, Text, Alert, StyleSheet } from "react-native";
+import { View, ScrollView, Text, Alert, StyleSheet, Platform } from "react-native";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import ListItem from "../../components/listItem";
 import AsyncStorage from "@react-native-async-storage/async-storage"; // Importação do AsyncStorage
@@ -10,33 +10,51 @@ export default function Settings() {
 
   // Função para realizar o logout
   const handleLogout = async () => {
-    Alert.alert(
-      "Confirmação",
-      "Você tem certeza de que deseja sair?",
-      [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Sair",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              console.log("Removendo token...");
-              await AsyncStorage.removeItem("userToken");
-              console.log("Token removido com sucesso!");
-
-              // Redireciona para a tela de login
-              navigation.reset({
-                index: 0,
-                routes: [{ name: "Login" }],
-              });
-            } catch (error) {
-              console.error("Erro ao realizar logout:", error);
-              Alert.alert("Erro", "Não foi possível realizar o logout.");
-            }
+    if (Platform.OS === "web") {
+      const confirm = window.confirm("Você tem certeza de que deseja sair?");
+      if (confirm) {
+        try {
+          console.log("Removendo token...");
+          await AsyncStorage.removeItem("userToken");
+          console.log("Token removido com sucesso!");
+  
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "Login" }],
+          });
+        } catch (error) {
+          console.error("Erro ao realizar logout:", error);
+          window.alert("Erro: Não foi possível realizar o logout.");
+        }
+      }
+    } else {
+      Alert.alert(
+        "Confirmação",
+        "Você tem certeza de que deseja sair?",
+        [
+          { text: "Cancelar", style: "cancel" },
+          {
+            text: "Sair",
+            style: "destructive",
+            onPress: async () => {
+              try {
+                console.log("Removendo token...");
+                await AsyncStorage.removeItem("userToken");
+                console.log("Token removido com sucesso!");
+  
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "Login" }],
+                });
+              } catch (error) {
+                console.error("Erro ao realizar logout:", error);
+                Alert.alert("Erro", "Não foi possível realizar o logout.");
+              }
+            },
           },
-        },
-      ]
-    );
+        ]
+      );
+    }
   };
 
   return (
