@@ -8,6 +8,7 @@ import { temas } from '../../global/temas';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { renderVariable } from '@/global/variables';
+
 const PreferencesScreen = () => {
   const navigation = useNavigation<NavigationProp<any>>();
 
@@ -22,6 +23,15 @@ const PreferencesScreen = () => {
     try {
       setLoading(true);
 
+      setLoading(true);
+
+      // Verifica e converte a data para DD/MM/YYYY
+      if (!/^\d{2}\/\d{2}\/\d{4}$/.test(birthDate)) {
+        Alert.alert("Erro", "Por favor, insira a data no formato DD/MM/AAAA");
+        setLoading(false);
+        return;
+      }
+
       const preferences = {
         birthDate,
         gender,
@@ -30,8 +40,11 @@ const PreferencesScreen = () => {
         experience,
       };
 
+      console.log('Preferences to save:', preferences);
+
       // Puxando o token do usuário
       const token = await AsyncStorage.getItem('userToken');
+      console.log('User token:', token);
 
       // Enviando as preferências para o backend
       const response = await fetch(`${renderVariable}/preferences`, {
@@ -43,17 +56,22 @@ const PreferencesScreen = () => {
         body: JSON.stringify(preferences),
       });
 
+      console.log('Response status:', response.status);
+      const responseData = await response.json();
+      console.log('Response data:', responseData);
+
       if (response.ok) {
         Alert.alert("Sucesso", "Preferências salvas com sucesso!");
-        // navigation.reset({
-        //   index: 0,
-        //   routes: [{ name: "BottonRoutes" }],
-        // });
-        navigation.navigate("BottonRoutes");
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "BottonRoutes" }],
+        });
+
       } else {
         throw new Error("Não foi possível salvar as preferências.");
       }
     } catch (error) {
+      console.error('Error saving preferences:', error);
       Alert.alert("Erro", "Não foi possível salvar as preferências. Tente novamente.");
     } finally {
       setLoading(false);
@@ -91,7 +109,6 @@ const PreferencesScreen = () => {
           title="CONDIÇÃO DE SAÚDE"
           placeholder="Ex: Nenhuma"
         />
-
         {/* Picker para Gênero */}
         <View>
           <Text style={styles.inputLabel}>GÊNERO</Text>
@@ -121,8 +138,6 @@ const PreferencesScreen = () => {
             <Picker.Item label="Avançado" value="Avançado" />
           </Picker>
         </View>
-
-        
       </View>
 
       <View style={styles.boxBotton}>
