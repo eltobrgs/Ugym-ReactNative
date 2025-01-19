@@ -22,60 +22,61 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      try {
-        const token = await AsyncStorage.getItem('userToken');
-        if (!token) {
-          setUserName("Usuário");
-          return;
-        }
-  
-        // Buscar nome do usuário
-        const response = await fetch(`${renderVaribale}/me`, {
-          method: 'GET',
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-  
-        if (response.ok) {
-          const data = await response.json();
-          setUserName(data.name || "Usuário");
-  
-          // Agora buscar as preferências do usuário
-          const preferencesResponse = await fetch(`${renderVaribale}/preferences`, {
-            method: 'GET',
-            headers: {
-              "Authorization": `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          });
-  
-          if (preferencesResponse.ok) {
-            const preferencesData = await preferencesResponse.json();
-            setUserInfo({
-              email: data.email,
-              dataNascimento: preferencesData.birthDate,
-              genero: preferencesData.gender,
-              objetivo: preferencesData.goal,
-              experiencia: preferencesData.experience,
-              condiçaodesaude: preferencesData.healthCondition,
+        try {
+            const token = await AsyncStorage.getItem('userToken');
+            if (!token) {
+                setUserName("Usuário");
+                return;
+            }
+
+            // Buscar nome do usuário
+            const response = await fetch(`${renderVaribale}/me`, {
+                method: 'GET',
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
             });
-          } else {
-            console.error("Erro ao buscar preferências:", preferencesResponse.status);
-          }
-        } else {
-          setUserName("Usuário");
+
+            if (response.ok) {
+                const data = await response.json();
+                setUserName(data.name || "Usuário");
+
+                // Agora buscar as preferências do usuário
+                const preferencesResponse = await fetch(`${renderVaribale}/preferences`, {
+                    method: 'GET',
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                if (preferencesResponse.ok) {
+                    const preferencesData = await preferencesResponse.json();
+                    setUserInfo({
+                        email: data.email,
+                        dataNascimento: preferencesData.birthDate, 
+                        genero: preferencesData.gender,
+                        objetivo: preferencesData.goal,
+                        experiencia: preferencesData.experience,
+                        condiçaodesaude: preferencesData.healthCondition,
+                    });
+                } else {
+                    console.error("Erro ao buscar preferências:", preferencesResponse.status);
+                }
+            } else {
+                setUserName("Usuário");
+            }
+        } catch (error) {
+            console.error("Erro ao buscar dados do usuário:", error);
+            Alert.alert("Erro", "Não foi possível carregar as informações.");
+            setUserName("Usuário");
         }
-      } catch (error) {
-        console.error("Erro ao buscar dados do usuário:", error);
-        Alert.alert("Erro", "Não foi possível carregar as informações.");
-        setUserName("Usuário");
-      }
     };
-  
+
     fetchUserData();
-  }, []);
+}, []);
+
 
   // Dados para gráficos
   const weightData = [80, 78, 76, 74, 73, 72]; // Pesos fictícios (em Kg)
