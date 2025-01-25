@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/button'; // Botão reutilizável
 import { temas } from '../../global/temas';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
+import { renderVariable } from "../../global/variables";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const colorOptions = [
     { label: 'Cor 1 - #f8e4d9 (Bege Claro)', value: '#f8e4d9' },
@@ -31,16 +33,47 @@ const AddActivityScreen = () => {
     const [darkColor, setDarkColor] = useState(colorOptions[2].value);
     const [loading, setLoading] = useState(false);
 
-    const saveActivity = () => {
-        // Lógica para salvar a atividade
-        console.log({
-            activityName,
-            status,
-            lightColor,
-            color,
-            darkColor,
-        });
-        navigation.navigate('Home'); // Navega para a tela inicial
+    const saveActivity = async () => {
+        setLoading(true); // Inicia o estado de carregamento
+        try {
+            const token = await AsyncStorage.getItem("userToken");  // Alterado para "userToken"
+            if (!token) {
+                throw new Error("Token de autenticação não encontrado.");
+            }
+    
+            const response = await fetch(`${renderVariable}/atividades`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    activityName,
+                    status: parseInt(status, 10),
+                    lightColor,
+                    color,
+                    darkColor,
+                }),
+            });
+    
+            // Verifica se a resposta foi bem-sucedida (status 2xx)
+            if (!response.ok) {
+                const errorMessage = await response.text();  // Tenta obter o texto da resposta, caso não seja JSON
+                throw new Error(`Erro ao salvar a atividade: ${response.status} - ${errorMessage}`);
+            }
+    
+            // Caso a resposta seja bem-sucedida, tenta analisar o JSON
+            const data = await response.json();
+    
+            console.log("Atividade salva com sucesso:", data.activity);
+            alert("Atividade salva com sucesso!");
+            navigation.navigate("home");
+        } catch (error) {
+            console.error("Erro ao salvar a atividade:", error);
+            Alert.alert("Erro", "Não foi possível salvar a atividade.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -50,15 +83,12 @@ const AddActivityScreen = () => {
             </View>
 
             <View style={styles.boxMid}>
-                {/* Campo para nome da atividade */}
                 <Input
                     value={activityName}
                     onChangeText={setActivityName}
                     title="NOME DA ATIVIDADE"
                     placeholder="Ex: Ciclismo"
                 />
-
-                {/* Campo para status */}
                 <Input
                     value={status}
                     onChangeText={setStatus}
@@ -66,8 +96,6 @@ const AddActivityScreen = () => {
                     placeholder="Ex: 85"
                     keyboardType="numeric"
                 />
-
-                {/* Picker para Light Color */}
                 <Text style={styles.inputLabel}>COR CLARA</Text>
                 <View style={[styles.pickerContainer, { backgroundColor: lightColor }]}>
                     <Picker
@@ -81,7 +109,6 @@ const AddActivityScreen = () => {
                     </Picker>
                 </View>
 
-                {/* Picker para Color */}
                 <Text style={styles.inputLabel}>COR MÉDIA</Text>
                 <View style={[styles.pickerContainer, { backgroundColor: color }]}>
                     <Picker
@@ -95,7 +122,6 @@ const AddActivityScreen = () => {
                     </Picker>
                 </View>
 
-                {/* Picker para Dark Color */}
                 <Text style={styles.inputLabel}>COR ESCURA</Text>
                 <View style={[styles.pickerContainer, { backgroundColor: darkColor }]}>
                     <Picker
