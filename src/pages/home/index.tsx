@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   Image,
   ImageBackground,
@@ -12,14 +12,15 @@ import {
   Animated,
   TouchableWithoutFeedback,
 } from 'react-native';
-
+import { useNavigation, NavigationProp } from "@react-navigation/native";
 import Header from '@/components/header';
 import { temas } from '@/global/temas';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Progress from 'react-native-progress';
 const {width} = Dimensions.get('window');
 const ITEM_WIDTH = width * 0.6; // Largura do item principal
-const ITEM_SPACING = (width - ITEM_WIDTH) / 20; // Espaçamento entre os ite
+const ITEM_SPACING = (width - ITEM_WIDTH) / 20; // Espaçamento entre os itens
+
 import headerImage from '../../assets/images/header.jpg';
 import notification from '../../assets/images/Notification.png';
 import banner from '../../assets/images/BG.png';
@@ -38,7 +39,7 @@ import heart from '../../assets/images/H.png';
 import calendar from '../../assets/images/Calender.png';
 import profile from '../../assets/images/User.png';
 import plus from '../../assets/images/Plus.png';
-import { useNavigation, NavigationProp } from "@react-navigation/native";
+import AddActivityScreen from '../AddActivity';
 
 const Home = () => {
     const navigation = useNavigation<NavigationProp<any>>();
@@ -380,7 +381,7 @@ const HighlightedFlatList = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
 
   // Dados adicionais para o card de adicionar
-  const extendedData = [...data, {name: 'Adicionar', status: 0, image: plus, lightColor: '#D3D3D3', color: '#E0E0E0', darkColor: '#A9A9A9'}];
+  const extendedData = [...data, {name: 'Adicionar', status: 0, image: plus, lightColor: '#D3D3D3', color: '#E0E0E0', darkColor: '#A9A9A9'}]; //mudar para o nome da tabela
 
   return (
     <View style={{flex: 1, backgroundColor: temas.cores.bgScreen, justifyContent: 'center'}}>
@@ -551,5 +552,7 @@ const data = [
     color: '#e7e3ff',
     darkColor: '#8860a2',
   },
-  
+  //substituir para uma data dinamica, puxar os dados do banco nome da tabela
 ];
+
+

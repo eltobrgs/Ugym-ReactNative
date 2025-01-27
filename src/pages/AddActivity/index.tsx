@@ -36,7 +36,7 @@ const AddActivityScreen = () => {
     const saveActivity = async () => {
         setLoading(true); // Inicia o estado de carregamento
         try {
-            const token = await AsyncStorage.getItem("userToken");  // Alterado para "userToken"
+            const token = await AsyncStorage.getItem("userToken"); // Alterado para "userToken"
             if (!token) {
                 throw new Error("Token de autenticação não encontrado.");
             }
@@ -56,18 +56,18 @@ const AddActivityScreen = () => {
                 }),
             });
     
-            // Verifica se a resposta foi bem-sucedida (status 2xx)
             if (!response.ok) {
-                const errorMessage = await response.text();  // Tenta obter o texto da resposta, caso não seja JSON
+                const errorMessage = await response.text(); // Tenta obter o texto da resposta, caso não seja JSON
                 throw new Error(`Erro ao salvar a atividade: ${response.status} - ${errorMessage}`);
             }
     
-            // Caso a resposta seja bem-sucedida, tenta analisar o JSON
             const data = await response.json();
     
             console.log("Atividade salva com sucesso:", data.activity);
             alert("Atividade salva com sucesso!");
-            navigation.navigate("Home"); // cheque os nomes das telas nos arquivos de navegação ( routes> bottom.routes.tsx, routes> index.routes.tsx)
+    
+            // Passa a nova atividade para a tela Home
+            navigation.navigate("Home", { newActivity: data.activity });
         } catch (error) {
             console.error("Erro ao salvar a atividade:", error);
             Alert.alert("Erro", "Não foi possível salvar a atividade.");
