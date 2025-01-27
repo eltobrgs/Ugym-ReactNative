@@ -67,7 +67,7 @@ const AddActivityScreen = () => {
     
             console.log("Atividade salva com sucesso:", data.activity);
             alert("Atividade salva com sucesso!");
-            navigation.navigate("home");
+            navigation.navigate("Home"); // cheque os nomes das telas nos arquivos de navegação ( routes> bottom.routes.tsx, routes> index.routes.tsx)
         } catch (error) {
             console.error("Erro ao salvar a atividade:", error);
             Alert.alert("Erro", "Não foi possível salvar a atividade.");
